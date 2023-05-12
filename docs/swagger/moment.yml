@@ -1,0 +1,140 @@
+/api/moments:
+  post:
+    tags:
+      - Moment
+    security: []
+    description: Store a new Moment
+    parameters:
+      - name: moment
+        in: body
+        required: true
+        schema:
+          properties:
+            title:
+              type: string
+              example: 'Meu titulo'
+              required: true
+            description:
+              type: string
+              example: 'Minha descrição'
+              required: true
+            image:
+              type: file
+              example: 'image_test.png'
+    produces:
+      - application/json
+    responses:
+      200:
+        description: A moment is created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response200StoreMoment'
+
+  get:
+    tags:
+      - Moment
+    description: Returns all Moments
+    parameters:
+    responses:
+      200:
+        description: All moments is return
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response200GetAll'
+
+'/api/moments/{id}':
+  get:
+    tags:
+      - Moment
+    description: Returns a Moments
+    parameters:
+    responses:
+      200:
+        description: A moments is return
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Response200WithouMessage'
+
+components:
+  schemas:
+    Response200StoreMoment:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Momento criado com sucesso!
+        data:
+          $ref: '#/components/schemas/Data'
+    Response200GetAll:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DataAll'
+    Data:
+      type: object
+      properties:
+        title:
+          type: string
+          format: text
+        description:
+          type: string
+          format: text
+        image:
+          type: string
+          format: byte
+          example: image_teste.png
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        id:
+          type: integer
+    DataAll:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          format: text
+        description:
+          type: string
+          format: text
+        image:
+          type: string
+          format: byte
+          example: image_teste.png
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArrayComments'
+
+    ArrayComments:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        text:
+          type: string
+        moment_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
